@@ -1,0 +1,1082 @@
+<center><h1><font size="10">![optional caption text](C:\Users\VB\Desktop\PROJECTS\logo.jpg)</font></h1> </center>
+<center> <h1><font size="6">**Savitribai Phule Pune University**</font> </h1> </center>
+<center> <h1><font size="6">**Post Graduate Diploma in Data Analytics**</font> </h1> </center>
+<center> <h1><font size="5">**LUNG CAPACITY ANALYSIS**</font> </h1> </center>
+
+### **1. ABSTRACT**
+<p>Lung Capacity are also known as respiratory volumes. It refers to the volume of gas in the lungs at a given time during the respiratory cycle. Lung capacities are derived from summation of different lung volumes. The Average total lung capacity of an adult human male is about 6 liters of air. Lung Volumes measurement is an integral part of pulmonary function test. These volumes tend to vary, depending on the depth of respiration, ethnicity, gender age, body composition and in certain respiratory diseases. A number of the lung Volumes can be measured by Spirometry-Tidal volume, Inspiratory reserve volume, and expiratory reserve volume. However, measurement of Residual volume, Functional residual capacity, and Total Lung Capacity is through body plethysmography, nitrogen washout and helium dilution technique.</p>
+
+### **2. INTRODUCTION**
+<p>Lung Capacity or total lung capacity (TLC) is the volume of air in the lungs upon the maximum effort of inspiration. Among healthy adults, the average lung capacity is about 6 liters. Lung Cap, Age, Gender, Height, Weight, Smoker or not, Caesarean or not are factors affecting the different ranges of lung capacity among individuals. TLCC rapid increases from birth to adolescence and plateaus at around 25 years old. Males tend to have a greater TLC than females, while individuals with tall stature tend to have greater TLC than those with short stature, and individuals with a high waist-to-hip ratio generally have a lower TLC. Individuals of African descent have a lower TLC compared to individuals of European descent. Additional factors that affect an individual's Lung Capacity include the level of physical activity chest wall deformities, and respiratory diseases.
+
+Clinicians can measure lung capacity by plethysmography, dilutional helium gas method, nitrogen gas washout method, or radiographically by a relatively new technique using by computed tomography (CT). Methodically, the TLC is calculated by measuring the lung capacities: inspiratory capacity (IC), functional residual capacity (FRC), and the vital capacity (VC). The lung capacities can be further divided into the following lung volumes: tidal volume (TV), inspiratory reserve volume (IRV), expiratory reserve volume (ERV), and the residual volume (RV). This analysis will not delve into definition of all the lung capacities and lung volumes but instead will outline the methods in which lung capacity is measured and discussed the clinical significance of TLC.</p>
+ 
+### **3. METHODOLOGY**
+#### **3.1 DATASET**
+<p>The Dataset is collected from Kaggle.com and it is showing Lung Capacity of smokers and non-smokers by their Age, Height, Weight, Gender and Caesarean. May be the Lung volume measured using above techniques but here we don't have clear information about how Lung capacity was measured in our dataset.</p>
+##### **Why this particular Dataset has been selected?**
+<p>This Particular dataset has been selected for Analysis as it includes maximum information which are useful of Statistical Analysis.</p>
+#### **3.2 Data Analysis**
+<p>For Lung Capacity Data Analysis I am using statistical technique including Exploratory Data Analysis, Visualization, Descriptive Statistics, Inferential Statistics, Probability Distribution, Simple Linear Regression, Multiple Linear Regression, and Logistic Regression. All the Data Analysis, computations and comparisons have been performed using R Language.</p>
+
+### **4. RESULT AND DISCUSSION**
+<p>The present work encompasses Data analysis of Lung Capacity Dataset.</p>
+
+#### **Set working Directory**
+
+```{r}
+
+setwd("C:\\Users\\VB\\Desktop\\PROJECTS")
+
+```
+
+#### **Read Data**
+
+```{r}
+
+LungCapData <- read.csv("LungCapData.txt",header = T,sep = "\t")
+
+```
+
+```{r}
+
+attach(LungCapData)
+
+```
+
+<center> <h1><font size="5">**Data Exploring**</font></h1> </center>
+
+```{r}
+str(LungCapData)
+```
+
+```{r}
+dim(LungCapData)
+```
+
+```{r}
+length(LungCapData)
+```
+
+```{r}
+head(LungCapData)
+```
+
+```{r}
+tail(LungCapData)
+```
+
+```{r}
+names(LungCapData)
+```
+
+```{r}
+levels(LungCapData$Smoke)
+
+```
+
+```{r}
+class(LungCapData$LungCap)
+```
+<center> <h1><font size="5">**Data Cleaning**</font></h1> </center>
+##### **TRAILING AND LEADING SPACES**
+
+```{r}
+LungCapData$Smoke <- trimws(LungCapData$Smoke,which = c("right"))
+LungCapData$Smoke <- trimws(LungCapData$Smoke,which = c("left"))
+```
+
+##### **HANDLING PUNCTUATION MARKS**
+
+```{r}
+LungCapData$smoke <- gsub("[[:punct:]]|[[:digit:]]|(http[[:alpha:]]*:\\/\\/)","",LungCapData$Smoke)
+```
+
+##### **IDENTIFYING MISSING VALUES**
+```{r}
+library(mice)
+library(VIM)
+md.pattern(LungCapData)
+```
+
+```{r}
+md.pairs(LungCapData)
+```
+
+```{r}
+p <- function(x){sum(is.na(x))/length(x)*100}
+apply(LungCapData,2,p)
+```
+
+```{r}
+apply(is.na(LungCapData),2,which)
+```
+
+<center> <h1><font size="5">**Exploratory Data Analysis**</font></h1> </center>
+#### **UNIVARITE ANALYSIS-** *to check the summary of the data to get rough idea about Data.*
+
+```{r}
+
+summary(LungCapData)
+
+```
+
+<center> <h1><font size="5">**Frequency Distribution**</font></h1> </center>
+#### *to examine the outliers and significant trends are the relative abundance of each particular target data within dataset.*
+
+```{r}
+breaks <- seq(from=min(Age),to=max(Age),by=3)
+pop <- cut(Age,breaks = breaks,right = TRUE,include.lowest = FALSE)
+title <- (cbind(table(pop)))
+colnames(title) <- c("frequency");title
+
+```
+
+```{r}
+
+hist(title)
+
+```
+
+#### **Table for proportion -** *to examine the number of observations for a variables.*
+
+```{r}
+
+table(Smoke)
+
+```
+
+```{r}
+
+table(Smoke)/length(Smoke)
+
+```
+
+#### **Create two way table or contigency table**
+
+```{r}
+
+table(Smoke,Gender)
+
+```
+
+
+<center> <h1><font size="5">**Measures of Central Tendency**</font></h1> </center>
+##### **Calculate the count of variable which is going to analyze**
+
+```{r}
+
+length(LungCap)
+
+```
+
+##### **Calcualte the Sum of the LungCap**
+
+```{r}
+
+sum(LungCap)
+
+```
+
+##### **Calculate the Mean of LungCap**
+
+```{r}
+
+mean(LungCap)
+
+```
+
+##### **Calculate the Median of of Luncap**
+
+```{r}
+
+median(LungCap)
+
+```
+
+##### **Calculate the Mode of Luncap**
+
+```{r}
+
+mode <- function(x){
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x,ux)))]
+}
+
+```
+
+
+```{r}
+
+mode(LungCap)
+
+```
+
+<center> <h1><font size="5"> **Measures of Dispersions**</font></h1> </center>
+##### **Calculate the Range of the LungCap**
+
+```{r}
+
+range(LungCap)
+
+```
+
+
+##### **Calculate quantile of the LungCap**
+
+```{r}
+
+quantile(LungCap)
+
+```
+
+
+##### **Calculate IQR of the LungCap**
+
+```{r}
+
+IQR(LungCap)
+
+```
+
+##### **Calculate min**
+
+```{r}
+
+min(LungCap)
+
+```
+
+##### **Calculate Max**
+
+```{r}
+
+max(LungCap)
+
+```
+
+##### **Calculate Variance**
+
+```{r}
+
+var(LungCap)
+
+```
+
+##### **Calculate Standard Deviation**
+
+```{r}
+
+sd(LungCap)
+
+```
+
+##### **Calculate Square root**
+
+```{r}
+
+sqrt(var(LungCap))
+
+```
+
+##### **calculate probabilities**
+
+```{r}
+
+quantile(LungCap,probs = c(0.20,0.5,0.9,1))
+
+```
+
+<center> <h1><font size ="5">**Measures of Shapes**</font></h1> </center>
+#### **Measures of Shapes -** *Describe the distribution of the data within dataset.*
+##### **Calculate the Skewness**
+
+```{r}
+library(e1071)
+skewness(LungCap)
+
+```
+
+##### **Shapiro test is used to check normality.**
+
+```{r}
+
+shapiro.test(LungCap)
+
+```
+
+
+```{r}
+
+hist(LungCap)
+
+```
+
+
+##### **Calculate the Kurtosis**
+
+```{r}
+
+kurtosis(LungCap)
+
+```
+
+```{r}
+
+plot(density(LungCap))
+
+```
+
+<center> <h1><font size="5">**BIVARIATE ANALYSIS**</font></h1> </center>
+#### *Bivariate Analysis Deals with two sets of data. this paired data come from related sources or samples.*
+##### **Correlation -** *is a parametric measure of the linear association between 2 numeric variables.*
+
+```{r}
+
+cor(LungCap,Height)
+
+```
+
+```{r}
+
+cor(LungCap,Age)
+
+```
+
+##### **Covariance -** *measure of how much two random variables vary together.*
+
+```{r}
+
+cov(LungCap,Age)/(sd(LungCap)*sd(Age))
+
+```
+```{r}
+plotCov
+
+```
+
+##### **Calculating Corrlation matrix**
+
+```{r}
+
+cor(LungCapData[,1:3])
+
+```
+
+##### **corrlation matrix plot**
+
+```{r}
+
+library(corrplot)
+corrplot(cor(LungCapData[,1:3]),method = 'pie')
+
+```
+
+##### **pair plot**
+##### *Pair plots are way to visualize relationship between each variables. It produces a matrix of relationship between each variable for an instant examination of our data.*
+
+```{r}
+
+library(psych)
+library(ggplot2)
+pairs.panels(LungCapData[c(1:3)],gap=0,bg=c("red","yellow","blue")[LungCapData$Smoke],pch=21)
+
+```
+
+<center> <h1><font size="5">**Multivariate Analysis**</font></h1> </center>
+##### *You try to understand a sense of relationship of all variables with one another.*  
+
+```{r}
+
+aggregate(data.frame("LungCap"=LungCapData$LungCap,"Age"=LungCapData$Age,"Height(cm)"=LungCapData$Height), by=list(Smoke=LungCapData$Smoke), FUN=mean)
+
+```
+
+
+<center> <h1><font size="5">**VISUALIZATION**</font></h1> </center>
+#### **Histogram -***is a quick way to get information about a sample distribution without detaild statistical Analysis.*
+
+```{r}
+
+hist(LungCapData$LungCap)
+
+```
+
+#### **Barplot**
+##### *Barplot is appropriate for summarizing the distribution of a categorical variables.*
+
+```{r}
+
+count <- table(Gender); count
+
+```
+
+```{r}
+
+barplot(count,main = "Gender",xlab = "Gender",ylab = "%")
+
+```
+
+```{r}
+
+percentage <- table(Gender)/length(Gender)
+
+```
+
+##### *Adding Titles to the plot*
+
+```{r}
+
+barplot(percentage,main = "TITLE",xlab = "Gender",ylab = "%")
+
+```
+
+#### **Pie Charts**
+##### *Pie chart is appropriate for summarizing the distribution of a categorical variables.*
+
+```{r}
+
+pie(count, main = "Gender")
+
+```
+
+#### **Boxplot** 
+##### *Boxplot is appropriate for summarizing the distribution of a numerical variables.*
+
+```{r}
+
+boxplot(LungCap,main='Boxplot',ylab='Lung Capacity',ylim=c(0,16),las=1)
+
+```
+
+#### **Density plot**
+##### *Density plot is appropriate for summarizing the distribution of a numerical variables.*
+
+```{r}
+
+d <- density(LungCap)
+
+```
+
+```{r}
+
+plot(d, main = 'Density')
+
+```
+
+#### **Stratified Boxplot**
+##### *is useful for examining the relationship between a categorical variable and numerica variable with strata or groupe.*
+
+```{r}
+
+AgeGroups <- cut(Age,breaks = c(0,13,15,17,25),labels = c("<13","14/15","15/17","18"))
+
+```
+
+```{r}
+
+Age[1:5]
+
+```
+
+```{r}
+
+AgeGroups[1:5]
+
+```
+```{r}
+
+boxplot(LungCap,ylab='Lung Capacity',main="Boxplot of LungCap",las = 1)
+
+```
+
+```{r}
+
+boxplot(LungCap ~ Smoke,ylab = "Lung Capacity",main="LungCap vs Smoke",las = 1)
+
+```
+
+```{r}
+
+boxplot(LungCap[Age >= 18] ~ Smoke[Age >= 18],ylab = "Lung Capacity",main = "LungCap vs smoke, for 18+",las=1)
+
+```
+
+```{r}
+
+boxplot(LungCap ~ Smoke * AgeGroups,ylab = "Lung Capacity", main = "LungCap vs Smoke, by AgeGroup",las = 2)
+
+```
+
+### **Steam and Leaf Plot**
+#### *is appropriate for summarizing the distribution of a numberic variables and are most appropriate for smaller datasets.*
+
+```{r}
+
+femaleLungCap <- LungCap[Gender == "female"]
+
+```
+
+```{r}
+
+stem(femaleLungCap,scale = 2)
+
+```
+
+### **Scatterplot**
+#### *is appropriate for examining the relationship between 2 numerica variable*
+
+```{r}
+
+plot(Age,Height,main = 'Scatterplot',xlab='AGE',ylab = 'HEIGHT',las=1,xlim = c(0,25),pch=8,col=2)
+
+```
+
+<center> <h1><font size="5">**INFERENTIAL STATISTICS**</font></h1> </center>
+#### **Hypothesis Testing** *Parametric Test*
+##### **Z-test one-sided**
+
+```{r}
+# H0 : Male smoker is greater than female smoker.
+# CI : 95 %
+
+t <- table(Gender,Smoke);t
+
+```
+
+#### *Make a Barplot to examine the distribution of data*
+
+```{r}
+
+barplot(t,beside = TRUE)
+
+```
+  
+```{r}
+
+prop.test(t,correct = FALSE,alternative = 'greater')
+
+```
+
+##### **Z-test two-sided**
+
+```{r}
+
+# H0 : female smoker is equal to male smoker
+# CI : 95%
+
+prop.test(t,correct = FALSE)
+
+```
+
+##### **T-test one-side**
+
+```{r}
+# H0 : mu < 8
+# one sided 95% cI for mu
+
+t.test(LungCap,mu=8,alternative = "less",conf.level = 0.95)
+
+```
+
+##### **t-test two-side - is parametric methods appropriate for examining the difference in means for 2 population.**
+  
+```{r}
+
+boxplot(LungCap ~ Smoke)
+
+```
+  
+```{r}
+
+# Ho : mean lung cap of smokers = of non-smokers
+# assume non-equal variances
+
+t.test(LungCap ~ Smoke,mu=0,alt='two.side',conf=0.95,var.eq=F,paired =F)
+
+```
+
+##### **Chi-square - Appropriate for testing independence between two categorical variables.**
+
+```{r}
+
+# For chi-square test produce a contigency table
+
+TAB <- table(Gender,Smoke)
+
+# produce a barplot to check the distribution.
+
+barplot(TAB,beside = T,legend=T)
+
+```
+
+```{r}
+
+CHI <- chisq.test(TAB,correct = T)
+CHI
+
+```
+
+
+##### **F-Test**
+##### **ANOVA - appropriate for comparing the means for 2 or more independent populations.**
+
+```{r}
+# produce a box plot to check the distribution of Lung cap variable and gender variable.
+
+boxplot(LungCap ~ Gender)
+
+```
+  
+```{r}
+
+# H0 : Mean Lungcap  is the same for all Genders
+
+ANOVA1 <-  aov(LungCap ~ Gender)
+summary(ANOVA1)
+
+```
+  
+```{r}
+
+TukeyHSD(ANOVA1)
+
+```
+```{r}
+
+plot(TukeyHSD(ANOVA1),las=1)
+
+```
+
+
+### **Non-Parametric Test**
+
+##### **Wilcoxon Signed Rank Test -** *Appropriate for examining the median Difference in observations for 2 populations.*
+##### **Mann-Whitney U Test A.K.A Wilcoxon Rank sum test -** *appropriate for examining the difference in Medians for 2 independent populations*
+  
+```{r}
+
+# Ho : Median Lung Capacity of Smokers  = that of non smokers
+# two sided test
+
+wilcox.test(LungCap ~ Smoke,mu=0,alt='two.sided',conf.int=T,conf.level = 0.95,paired=F,exact=F,correct =T)
+
+```
+  
+##### **Kruskal Wallis Test -** *equivalent to one-way Analysis of Variance*
+  
+```{r}
+
+kruskal.test(LungCap ~ Gender)
+
+```
+  
+##### **Fisher's Exact test* - ** *alternative to the chi-square test, it is used when the assumptions of chi-square test not met.we may consider using Fisher's Exact Test*
+  
+```{r}
+
+fisher.test(TAB,conf.int = T,conf.level = 0.99)
+
+```
+  
+<center> <h1><font size="5">**PROBABILITY DISTRIBUTION**</font></h1> </center>
+#### **Binomial Distribution -** *X is Binomially Distributed with n = 20 trials and p = 1/6 prob of success.*
+  
+```{r}
+# In R dbinom command is used to find values for the probability density function of x, f(x)
+# suppose 80%  adults are smoker and out of 10 are caesarean what 
+# is the probability that they are male exactly seven
+# observations is n = 10
+# success or events of male is x = 7
+# p=0.8
+
+dbinom(x=7,size = 10,prob = 0.8)
+
+# Probability of having exactly 7 males is 20.13%
+
+```
+
+#### **Possion Distribution -** *is the probability distribution of independent occurances in an interval.*
+  
+```{r}
+# support there are 12 adults smoking per minute on an average,
+# find the probability of having seventeen or more adults smoking in a
+# particular minutes
+
+# probability of haveing sixteen or less adults smoking in a particular
+# minute is given by the fuction ppois.
+
+ppois(16,lambda = 12) # lower tail
+
+```
+  
+  
+```{r}
+# Here, the probability of having seventeen or more adults smoking in a # minute is in the upper tail of the probability density function
+
+ppois(16,lambda = 12,lower = FALSE) # UPPER TAIL
+
+# if there are twelve adults smoking per minute on an average, the probability of having seventeen ore more adults smoking in a particuler minute is 10.1%
+
+```
+  
+  
+#### **Normal Distribution**
+  
+```{r}
+
+# the mean of Lung capacity is 7, and standard deviation is 2.66.
+# What is the percentage of Lung capacity of female which has 9 or more lung cap.
+
+pnorm(9,mean = 7,sd=2.66, lower.tail = FALSE)
+
+# The percentage of female having Lung cap 9 or more is 22.6%
+
+```
+
+<center> <h1><font size="5">**MODELLING**</font></h1> </center>  
+##### **Simple Linear Regression -** *useful for examining or modelling the relationship between 2 numeric variables.*
+  
+```{r}
+
+# Model the relationship between Age and Lung Capacity
+
+plot(Age,LungCap,main = "Scatterplot")
+
+```
+```{r}
+
+# Calculate the correlation
+
+cor(Age,LungCap)
+
+```
+
+```{r}
+
+# Fit a Linear Model
+
+mod <- lm(LungCap ~ Age)
+
+```
+
+
+
+```{r}
+# Model Evaluation
+# Function that returns Root Mean Squared Error
+
+rmse <- function(error)
+{
+    sqrt(mean(error^2))
+}
+ 
+# Function that returns Mean Absolute Error
+
+mae <- function(error)
+{
+    mean(abs(error))
+}
+
+
+
+```
+
+```{r}
+
+rmse(mod$residuals)/100
+
+```
+
+```{r}
+
+mae(mod$residuals)/100
+
+```
+
+```{r}
+
+summary(mod)
+
+```
+
+```{r}
+
+# Predict the Model
+
+predict(mod, data.frame(Age = 16))
+
+```
+
+### **Multiple Linear Regression -**
+#### *useful for modelling the relationship between more than 2 numeric variables.*
+
+```{r}
+
+# Fit model
+
+model1 <- lm(LungCap ~ Age + Height)
+
+```
+
+```{r}
+
+# Summary
+
+summary(model1)
+
+```
+
+
+
+```{r}
+# Calculate Pearson's correlation between Age and Height
+
+cor(Age,Height,method = "pearson")
+
+```
+
+
+```{r}
+
+# ask for confidence intervals for the model coefficients
+
+confint(model1,conf.level=0.95)
+
+```
+
+<center> <h1><font size="5">**MODEL DIAGNOSTIC**</font></h1> </center>  
+##### **Check Outliers**
+  
+```{r}
+
+library(car)
+outlierTest(model1)
+
+```
+
+```{r}
+
+qqPlot(model1,main="QQPLOT") 
+
+```
+
+```{r}
+
+leveragePlots(model1)
+
+```
+
+##### **Examine the multicollinarity problem in the model**
+
+```{r}
+
+vif(model1)  # Variable value should be less than 10 then we can conclude there is no Multicollinarity issue.
+
+```
+
+##### **Checking the Heteroscadasticity problem in the model**
+
+```{r}
+
+ncvTest(model1)  # P-value should be less than 0.05 then we can conclude there is no heteroscadasticity
+
+```
+
+```{r}
+
+library(lmtest)
+bptest(model1)
+
+```
+
+
+##### **Checking Non-Linearity problem in the model**
+
+```{r}
+
+library(corrplot)
+plot(model1)
+
+```
+
+
+
+##### **Checking AUtocorrelation problem in the model**
+
+```{r}
+
+dwtest(model1) 
+
+# p-value is < 2.0 hence we accept Ha, can conclude there is no autocorrelation in this model
+
+```
+
+```{r}
+
+durbinWatsonTest(model1)
+
+```
+
+```{r}
+
+acf(model1$residuals)
+
+# we see all the vertical lines are within significance bounce except 0 and more or less line 4 is crossing the significance bounce but not so high. wc can conclude there is no autocorrelation in the model.
+
+```
+
+```{r}
+
+bgtest(model1) 
+
+# p value is < 2.0 hence we accept Ha, can conclude there is no autocorrelation in this model
+
+```
+
+```{r}
+
+bgtest(model1,order = 2) 
+
+# p value is < 2.0 hence we accept Ha, can conclude there is no autocorrelation in this model
+
+```
+<center> <h1><font size="5">**REGRESSION ASSUMPTIONS**</font></h1> </center> 
+##### *1 Assumption : The Y-values (or the errors, "e") are independent!*
+##### *2 Assumption : The Y-values can be expressed as a linear function of the X variables*
+##### *3 Assumption : Variation of observations around the regression line (the residual SE is constant (homoscedasticity)*
+##### *4 Assumption : for given values of X,Y values (or the error) are Normally distributed*
+
+```{r}
+
+plot(model1)
+
+```
+
+#### **LOGISTIC REGRESSION -** *is used to describe data and to explain the relationship between one dependent binary variable and one or more nominal, ordinal, interval or ratio-level independent variables.*
+
+```{r}
+# Read Data
+ 
+data <- read.csv("LungCapData.txt",header = T,sep = "\t")
+str(data)
+
+```
+
+
+```{r}
+
+data <- data[c(1:4)]
+
+```
+
+
+```{r}
+
+# Normalize Data
+
+data$LungCap <- scale(data$LungCap)
+data$Age <- scale(data$Age)
+data$Height <- scale(data$Height)
+
+```
+
+
+
+```{r}
+
+# Convert data to binary
+
+levels(data$Smoke)=0:1
+head(data)
+
+```
+
+
+```{r}
+
+# Check the class imbalance
+
+table(data$Smoke)
+
+```
+
+
+```{r}
+
+# Data Partition
+
+set.seed(1234)
+ind <- sample(2,nrow(data),replace = T,prob = c(0.8,0.2))
+train <- data[ind == 1,]
+test <- data[ind == 2,]
+
+```
+
+
+```{r}
+
+# Handling Class Imbalance
+
+library(ROSE)
+
+both <- ovun.sample(Smoke ~., data = train,method = 'both',p=0.5,seed=222,N=573)$data
+table(both$Smoke)
+
+over <- ovun.sample(Smoke ~.,data = train,method = 'over',N=1296)$data
+table(over$Smoke)
+
+under <- ovun.sample(Smoke ~., data = train,method = 'under',N=154)$data
+table(under$Smoke)
+
+```
+
+
+```{r}
+
+# Build a Model
+
+mymodel <- glm(Smoke ~ LungCap + Age + Height,data = both, family = 'binomial')
+
+```
+
+
+
+```{r}
+
+# Predict Model on Training Dataset
+
+p <- predict(mymodel,both,type = 'response')
+pred <- ifelse(p>0.5,1,0)
+tab <- table(Predicted=pred,Actual=both$Smoke)
+1-sum(diag(tab))/sum(tab)
+
+```
+
+
+
+```{r}
+
+# Predict model on test data
+
+p1 <- predict(mymodel,test,type = 'response')
+pred1 <- ifelse(p1 >0.5,1,0)
+tab1 <- table(Predicted= pred1, Actual=test$Smoke)
+1-sum(diag(tab1))/sum(tab1)
+
+```
+
+### **5. CONCLUSION**
+<p>With the help of R Statistical analysis and graphical representations, I can easily analysis the Lung Capacity data in the Smokers and non-smokers by their age, gender and Height.</p>
+
+### **6.REFERENCES**
+<p>
+1.	European Respiratory Journal http://erj.ersjournals.com/content/26/3/511
+2.	Lutfi MF. The physiological basis and clinical significance of lung volume measurements.Multidisciplinary Respiratory Medicine, 2017;
+3.	Ruppel GL. What Is the Clinical Value of Lung Volumes? Respiratory care, 2012;57(1):126-35.
+4.	Stocks J, Quanjer PH. Reference values for residual volume, functional residual capacity and total lung capacity. ATS Workshop on Lung Volume Measurements. Official Statement of The European Respiratory Society. Eur. Respir. J. 1995 Mar;8(3):492-506. [PubMed]
+5.	Lutfi MF. The physiological basis and clinical significance of lung volume measurements. Multidiscip Respir Med. 2017;12:3. [PMC free article] [PubMed]
+6.	Rossiter CE, Weill H. Ethnic differences in lung function: evidence for proportional differences. Int J Epidemiol. 1974 Mar;3(1):55-61. [PubMed]
+7.	Wanger J, Clausen JL, Coates A, Pedersen OF, Brusasco V, Burgos F, Casaburi R, Crapo R, Enright P, van der Grinten CP, Gustafsson P, Hankinson J, Jensen R, Johnson D, Macintyre N, McKay R, Miller MR, Navajas D, Pellegrino R, Viegi G. Standardisation of the measurement of lung volumes. Eur. Respir. J. 2005 Sep;26(3):511-22. [PubMed]
+8.	Thomas PS, Cowen ER, Hulands G, Milledge JS. Respiratory function in the morbidly obese before and after weight loss. Thorax. 1989 May;44(5):382-6. [PMC free article] [PubMed]
+9.	https://www.lung.org/lung-health-diseases/how-lungs-work/lung-capacity-and-aging</p>
