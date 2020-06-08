@@ -158,6 +158,18 @@ file.rename("utilities.csv","vikas.csv")
 
 file.rename("vik/","vikas/")
 
+# Remove list of objects from R environment
+
+rm(list =ls())
+
+# will clear all objects includes hidden objects.
+
+rm(list = ls(all.names = TRUE))
+
+#  free up memrory and report the memory usage.
+
+gc()
+
 # check no of sheets in excel
 
 library(readr)
