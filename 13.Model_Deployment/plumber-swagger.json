@@ -1,0 +1,76 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Returns the Probability of a vehicle fitted with a manual transmission",
+    "title": "plumberCarsService",
+    "version": "1.0.0"
+  },
+  "host": null,
+  "schemes": ["http"],
+  "produces": ["application/json"],
+  "paths": {
+    "/plothp": {
+      "get": {
+        "summary": " Plot a histogram of the gross horsepower",
+        "responses": {
+          "default": {
+            "description": "Default response."
+          }
+        },
+        "parameters": [],
+        "tags": null
+      }
+    },
+    "/plotam": {
+      "get": {
+        "summary": " Plot a histogram of the manual transmission",
+        "responses": {
+          "default": {
+            "description": "Default response."
+          }
+        },
+        "parameters": [],
+        "tags": null
+      }
+    },
+    "/plotwt": {
+      "get": {
+        "summary": " Plot a histogram of the weight (1000 lbs)",
+        "responses": {
+          "default": {
+            "description": "Default response."
+          }
+        },
+        "parameters": [],
+        "tags": null
+      }
+    },
+    "/manualtransmission": {
+      "post": {
+        "summary": " Returns the probability whether the car has a manual transmission",
+        "responses": {
+          "default": {
+            "description": "Default response."
+          }
+        },
+        "parameters": [
+          {
+            "name": "wt",
+            "description": "Weight (1000 lbs)",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "hp",
+            "description": "Gross horsepower",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": null
+      }
+    }
+  }
+}
