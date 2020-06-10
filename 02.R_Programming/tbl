@@ -2,6 +2,7 @@ df <- data.frame(
   emp_id = c(1:6),
   emp_name = c("vikas","Sonali","celean","Sumit","Ravi","Sayali"),
   emp_gender = c("male","female","female","male","male","female"),
+  emp_admit = c("Admited","Rejected","Admited","Rejected","Admited","Rejected"),
   salary = c(625,515,611,720,825,920),
   join_date = c("2012","2013","2015",
                         "2016","2017","2018"))
