@@ -189,37 +189,6 @@ data %>%
 ```
 
 ### Violin plot
-
-```{r}
-
-fig <- veh %>%
-  plot_ly(
-    x = ~State,
-    y = ~Mileage,
-    type = 'violin',
-    box = list(
-      visible = T
-    ),
-    meanline = list(
-      visible = T
-    )
-  )
-
-fig <- fig %>%
-  layout(
-    xaxis = list(
-      title = "Mileage"
-    ),
-    yaxis = list(
-      title = "State",
-      zeroline = F
-    )
-  )
-
-fig
-
-```
-
 ```{r}
 
 veh %>%
@@ -230,8 +199,6 @@ veh %>%
          yaxis = list(title = 'State'))
 
 ```
-
-
 
 Map
 =================================================================================
