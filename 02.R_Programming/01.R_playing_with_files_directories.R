@@ -58,6 +58,14 @@ list.files(pattern = ".csv", recursive = TRUE)
 
 all_data_frames <- lapply(list.files(pattern = ".csv"), read.csv)
 
+# Open file
+
+file.show("filename.csv")
+
+# Writing lines to the file
+
+writeLines("Hello world",file("new1.csv"))
+
 # stack all data frames together
 
 single_data_frame <- Reduce(rbind, all_data_frames)
