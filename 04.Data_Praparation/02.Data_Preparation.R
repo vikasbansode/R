@@ -93,4 +93,20 @@ paste(colnames(df),collapse = "+")
 
 noquote(paste(colnames(df),collapse = "+"))
 
-# Now Data is ready for model building
+# Comparing two datasets
+dat1 <- paste('a', 1:6, sep='')
+dat2 <- paste('a', c(2,4:6,8,9,10), sep='')
+
+
+dat2 %in% dat1
+dat1 %in% dat2
+
+# to  first get the common elements
+
+dat1[dat1 %in% dat2]
+dat2[dat2 %in% dat1]
+
+# to get the not common elements
+
+dat2[!(dat2 %in% dat1)]
+dat1[!(dat1 %in% dat2)]
