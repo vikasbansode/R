@@ -66,6 +66,15 @@ file.show("filename.csv")
 
 writeLines("Hello world",file("new1.csv"))
 
+file.create("newfile.csv")
+sink("newfile.csv")
+cat("Hello")
+cat("\n")
+cat("world")
+sink()
+file.show("newfile.csv")
+readLines("newfile.csv")
+
 # stack all data frames together
 
 single_data_frame <- Reduce(rbind, all_data_frames)
