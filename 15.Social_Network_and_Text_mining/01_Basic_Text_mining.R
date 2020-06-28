@@ -11,7 +11,7 @@ text2 <- tolower(text2) # conver to lower case
 
 library(tm)
 text2 <- removeWords(text2,stopwords()) # Remove stopwords
-text2 <- gsub(pattern = "\\b[A-z]\\b{1}",replacement = " ",text2) # removing works/letter with any specific lenght in this case letter 1.
+text2 <- gsub(pattern = "\\b[A-z]\\b{1}",replacement = " ",text2) # removing words/letter with any specific lenght in this case letter 1.
 text2 <- stripWhitespace(text2)
 
 
