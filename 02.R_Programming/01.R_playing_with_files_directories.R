@@ -192,3 +192,21 @@ gc()
 library(readr)
 excel_sheets()
 
+
+# Connecting postgres sql
+
+library(RPostgres)
+library(DBI)
+
+
+pw <- {
+  "vikas@123"
+}
+
+con <- dbConnect(RPostgres::Postgres()
+                 , host='localhost'
+                 , port='5432'
+                 , dbname='testdb'
+                 , user='postgres'
+                 , password=pw)
+
