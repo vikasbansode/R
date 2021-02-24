@@ -1,3 +1,12 @@
+breaks = seq(from=87,to=222,by=15)
+pop = cut(df$Weight,breaks = breaks,right = TRUE,include.lowest = FALSE)
+title = (cbind(table(pop)))
+rel.freq = title/nrow(df)
+freq_tbl <- cbind(title,rel.freq)
+colnames(freq_tbl) <- c('Freq','Rel_Freq')
+freq_tbl
+
+
 
 # Create a vector
 
